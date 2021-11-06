@@ -1,29 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment2
+  name: nginx
   labels:
-    app: nginx2
+    app: nginx
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: nginx2
+      app: nginx
   template:
     metadata:
       labels:
-        app: nginx2
+        app: nginx
     spec:
       containers:
       - name: nginx
-        image: nginx:1.14.2
+        image: nginx
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: varlibdockercontainers
-          mountPath: /var/lib/docker/containers
-          readOnly: true
-      volumes:
-      - name: varlibdockercontainers
-        hostPath:
-          path: /var/lib/docker/containers
