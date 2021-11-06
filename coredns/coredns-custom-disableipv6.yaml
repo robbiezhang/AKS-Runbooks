@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  membershipservices.server: |
+    membershipservices-ext.wal-mart.com:53 {
+      errors
+      rewrite stop type AAAA A
+      forward . /etc/resolv.conf
+    }
