@@ -62,7 +62,7 @@ Samples:
     Name:   kubernetes.default.svc.cluster.local
     Address: 10.0.0.1
     ```
-
+    **Why?**
 4. Check the pod's DNS config
     ```
     kubectl exec dnsutils -- cat /etc/resolv.conf
@@ -76,7 +76,7 @@ Samples:
 5. Create nginx deployment in "test" namespace
     ```
     kubectl create ns test
-    kubectl apply -f nginx.yaml -n test
+    kubectl apply -f nginx-deploy.yaml -n test
     ```
     Result:
     ```
@@ -89,6 +89,8 @@ Samples:
     ```
     Result:
     ```
+    NAME                     READY   STATUS    RESTARTS   AGE
+    nginx-7848d4b86f-8vk4g   1/1     Running   0          9s
     ```
 7. Expose nginx service
     ```
@@ -119,4 +121,3 @@ Samples:
     ** server can't find nginx: NXDOMAIN
     ```
     **Why?**
-10. 
