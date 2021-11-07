@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx
   labels:
-    app: nginx
+    aks-lab: dnspolicy
 spec:
   selector:
     matchLabels:
