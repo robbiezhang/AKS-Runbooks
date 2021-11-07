@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: notspecified
+  name: 3-notspecified-hostnetwork
   namespace: default
   labels:
     aks-lab: dnspolicy
@@ -14,3 +14,4 @@ spec:
       - "86400"
     imagePullPolicy: IfNotPresent
   restartPolicy: Always
+  hostNetwork: true
