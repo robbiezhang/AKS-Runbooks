@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: 5-clusterfirstwithhostnetwork
+  name: 5-clusterfirstwithhostnet
   namespace: default
   labels:
     aks-lab: dnspolicy

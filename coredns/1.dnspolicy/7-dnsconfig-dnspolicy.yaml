@@ -18,3 +18,7 @@ spec:
   dnsConfig:
     nameservers:
     - 1.1.1.1
+    searches:
+    - my.dns.search.suffix
+    options:
+    - name: single-request-reopen
