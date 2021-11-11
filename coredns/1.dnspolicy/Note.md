@@ -1,6 +1,10 @@
 # DNS Policy and DNS Config
 
-Reference: [DNS for Services and Pods](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)
+Reference:
+
+[DNS for Services and Pods](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)
+
+---
 
 ## Kubernetes cluster domain
 

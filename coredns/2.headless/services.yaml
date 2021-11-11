@@ -6,7 +6,7 @@ metadata:
     aks-lab: headless
 spec:
   selector:
-    name: busybox
+    aks-lab: headless
   ports:
   - name: foo
     port: 1234
@@ -21,7 +21,7 @@ metadata:
 spec:
 # publishNotReadyAddresses: true
   selector:
-    name: busybox
+    aks-lab: headless
   clusterIP: None
   ports:
   - name: foo

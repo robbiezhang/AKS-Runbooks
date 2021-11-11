@@ -2,10 +2,13 @@
 
 [CoreDNS](https://coredns.io/) is a flexible, extensible DNS server that can serve as the Kubernetes cluster DNS. CoreDNS project is hosted by the CNCF.
 
+References
+
 [CoreDNS Codebase](https://github.com/coredns/coredns)
 
 [CoreDNS Release Note](https://coredns.io/tags/release/)
 
+---
 # Service in Kubernetes
 
 Service is an abstract way to expose an application running on a set of Pods as a network service.

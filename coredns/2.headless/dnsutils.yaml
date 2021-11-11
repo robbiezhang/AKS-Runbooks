@@ -9,6 +9,6 @@ spec:
     image: gcr.io/kubernetes-e2e-test-images/dnsutils:1.3
     command:
       - sleep
-      - "7200"
+      - "86400"
     imagePullPolicy: IfNotPresent
   restartPolicy: Always
