@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: normal-svc
+  labels:
+    aks-lab: headless
+spec:
+  selector:
+    name: busybox
+  ports:
+  - name: foo
+    port: 1234
+    targetPort: 1234
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: headless-svc
+  labels:
+    aks-lab: headless
+spec:
+# publishNotReadyAddresses: true
+  selector:
+    name: busybox
+  clusterIP: None
+  ports:
+  - name: foo
+    port: 5678
+    targetPort: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-svc
+spec:
+  type: ExternalName
+  externalName: www.microsoft.com

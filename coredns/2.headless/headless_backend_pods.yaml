@@ -1,25 +1,12 @@
 apiVersion: v1
-kind: Service
-metadata:
-  name: default-subdomain
-spec:
-  selector:
-    name: busybox
-  clusterIP: None
-  ports:
-  - name: foo # Actually, no port is needed.
-    port: 1234
-    targetPort: 1234
----
-apiVersion: v1
 kind: Pod
 metadata:
   name: busybox1
   labels:
-    name: busybox
+    aks-lab: headless
 spec:
   hostname: busybox-1
-  subdomain: default-subdomain
+  subdomain: headless-svc
   containers:
   - image: busybox:1.28
     command:
@@ -32,10 +19,10 @@ kind: Pod
 metadata:
   name: busybox2
   labels:
-    name: busybox
+    aks-lab: headless
 spec:
   hostname: busybox-2
-  subdomain: default-subdomain
+  subdomain: headless-svc
   containers:
   - image: busybox:1.28
     command:
@@ -49,3 +36,19 @@ spec:
         - "1"
       initialDelaySeconds: 5
       periodSeconds: 5
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox3
+  labels:
+    aks-lab: headless
+spec:
+  hostname: busybox-3
+  subdomain: wrong-svc
+  containers:
+  - image: busybox:1.28
+    command:
+      - sleep
+      - "3600"
+    name: busybox
