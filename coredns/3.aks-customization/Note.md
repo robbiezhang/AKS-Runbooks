@@ -24,5 +24,40 @@ Try apply [coredns-autoscaler-1.yaml](coredns-autoscaler-1.yaml) and [coredns-au
 ## AKS Customization
 CoreDNS is a DNS server that is modular and pluggable, and each plugin adds new functionality to CoreDNS. In AKS, we provide a default Corefile, and hooks 2 integration points for customization.
 
-In the kubes-sytem namespace, there are 2 configmaps created by default for coredns: coredns and coredns-custom
+The Corefile is defined in the coredns configmap in the kube-system namespace, and we reconcile the setting to ensure the basic cluster DNS configuration is expected. Here is the content:
+```
+data:
+  Corefile: |
+    .:53 {
+        errors
+        ready
+        health
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+        }
+        prometheus :9153
+        forward . /etc/resolv.conf
+        cache 30
+        loop
+        reload
+        loadbalance
+        import custom/*.override
+    }
+    import custom/*.server
+```
 
+**import custom/*.override**: allow adding plugin in the default section.
+**import custom/*.server**: allow adding stub-domain overrides.
+
+coredns-custom is empty by default. We allows customer to edit this configmap to achieve the customization of the coredns configuration.
+
+Examples:
+### Enable log
+Apply [coredns-custom-log.yaml](coredns-custom-log.yaml)
+
+```
+kubectl patch cm coredns-custom -n kube-system --patch-file coredns-custom-log.yaml
+```
+
+### Add Stub Domain
