@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  server-rewrite.override: |
+    non.existent:53 {
+      errors
+      rewrite stop {
+        name regex (.*)\.non\.existent {1}.default.svc.cluster.local
+        answer name (.*)\.default\.svc\.cluster\.local {1}.non.existent
+      }
+      forward . 10.0.0.10
+    }
