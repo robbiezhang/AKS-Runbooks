@@ -4,7 +4,7 @@ metadata:
   name: coredns-custom
   namespace: kube-system
 data:
-  server-rewrite.override: |
+  server-rewrite.server: |
     non.existent:53 {
       errors
       rewrite stop {

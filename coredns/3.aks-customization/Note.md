@@ -74,25 +74,89 @@ data:
 
 ### Examples:
 - Enable log
-Apply [coredns-custom-log.yaml](coredns-custom-log.yaml)
 
-```
-kubectl patch cm coredns-custom -n kube-system --patch-file coredns-custom-log.yaml
-```
+    The [log](https://coredns.io/plugins/log/) plugin enables query logging to the standard output.
+    Apply [coredns-custom-log.yaml](coredns-custom-log.yaml)
+
+    ```
+    kubectl patch cm coredns-custom -n kube-system --patch-file coredns-custom-log.yaml
+    ```
+    Since we have the [reload](https://coredns.io/plugins/reload/) plugin in the configuration, the change will be reloaded automatically within 1 min.
+
+    Command:
+    ```
+    kubectl -n kube-system logs -l k8s-app=kube-dns --timestamps
+    ```
+
+    Result:
+    ```
+    [INFO] Reloading
+    [WARNING] No files matching import glob pattern: custom/*.server
+    [WARNING] No files matching import glob pattern: custom/*.server
+    [INFO] plugin/reload: Running configuration MD5 = bc7626f6210a5c421855f7722e2a517e
+    [INFO] Reloading complete
+    ```
+
+    Command:
+    ```
+    kubectl exec dnsutils -- nslookup kubernetes
+    ```
+    CoreDNS log:
+    ```
+    [INFO] 10.244.1.12:41045 - 64252 "A IN kubernetes.default.svc.cluster.local. udp 54 false 512" NOERROR qr,aa,rd 1060.000375798s
+    [INFO] 10.244.1.12:45056 - 52140 "AAAA IN kubernetes.default.svc.cluster.local. udp 54 false 512" NOERROR qr,aa,rd 147 0.000303199s
+    ```
+
+    Command:
+    ```
+    kubectl exec dnsutils -- nslookup kubernetes.
+    ```
+    CoreDNS log:
+    ```
+    [INFO] 10.244.1.12:42451 - 17013 "A IN kubernetes. udp 28 false 512" NXDOMAIN qr,rd,ra 103 0.007624855s
+    ```
 
 - Add Stub Domain
-Apply [coredns-stub-domain.yaml](coredns-stub-domain.yaml)
 
-```
-kubectl patch cm coredns-custom -n kube-system --patch-file coredns-stub-domain.yaml
-```
+    Sometimes, customer wants to handle the DNS query to a particular zone specially. They can add a stub domain to achieve it.
+
+    Apply [coredns-stub-domain.yaml](coredns-stub-domain.yaml)
+
+    ```
+    kubectl patch cm coredns-custom -n kube-system --patch-file coredns-stub-domain.yaml
+    ```
+
+    Same as above, the reload plugin will reload the change within 1 min.
+
+    Command:
+    ```
+    kubectl exec dnsutils -- nslookup google.com.
+    ```
 
 - Rewrite DNS query
-Apply [coredns-rewrite.yaml](coredns-rewrite.yaml)
 
-```
-kubectl patch cm coredns-custom -n kube-system --patch-file coredns-rewrite.yaml
-```
+    The [rewrite](https://coredns.io/plugins/rewrite/) plugin can manipulate the DNS query.
+
+    Apply [coredns-rewrite.yaml](coredns-rewrite.yaml)
+
+    ```
+    kubectl patch cm coredns-custom -n kube-system --patch-file coredns-rewrite.yaml
+    ```
+
+    Command:
+    ```
+    kubectl exec dnsutils -- nslookup kubernetes.non.existent.
+    ```
+    Result:
+    ```
+    Server:         10.0.0.10
+    Address:        10.0.0.10#53
+
+    Name:   kubernetes.non.existent
+    Address: 10.0.0.1
+    ```
+
+    Remove the "anwser" from the rewrite plugin to see what's the difference in the response.
 
 ### Notice:
 1. You cannot define the same Server Block (same zone on same port) more than once.

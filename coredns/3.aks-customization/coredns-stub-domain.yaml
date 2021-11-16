@@ -4,7 +4,7 @@ metadata:
   name: coredns-custom
   namespace: kube-system
 data:
-  server-stubdomain.override: |
+  server-stubdomain.server: |
     cloudflare.com:53 {
       errors
       cache 30
